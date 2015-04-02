@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -13,20 +12,15 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.xmlbeans.XmlException;
 
+import com.mysql.jdbc.PreparedStatement;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import javax.swing.SwingConstants;
-
-import java.awt.Font;
-
-import javax.swing.BoxLayout;
-
-import java.awt.GridLayout;
+import java.sql.SQLException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -78,40 +72,13 @@ public class DigitalSignatureUI extends JFrame {
 		
 		JButton btnNewButton = new JButton("Generate Digital Signature");
 		btnNewButton.addActionListener(new ActionListener() {
-			private XWPFWordExtractor xw;
-
 			public void actionPerformed(ActionEvent arg0) {
-				File file=new File("C:\\Name.docx");
-			        FileInputStream fs;
-					try {
-						fs = new FileInputStream(file);
-						OPCPackage d = OPCPackage.open(fs);
-						xw = new XWPFWordExtractor(d);
-						System.out.println(xw.getText());   
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InvalidFormatException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (XmlException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (OpenXML4JException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			        
-			        
-			         
-			}
+			       	}
 		});
 		
 		JButton btnNewButton_1 = new JButton("Choose File");
 		btnNewButton_1.addActionListener(new ActionListener() {
+			private XWPFWordExtractor xw;
 			public void actionPerformed(ActionEvent arg0) {
 	                JFileChooser openFile = new JFileChooser();
 	                FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -119,11 +86,52 @@ public class DigitalSignatureUI extends JFrame {
 	                    openFile.setFileFilter(filter);
 	                    int returnVal = openFile.showOpenDialog(btnNewButton_1);
 	                    if(returnVal == JFileChooser.APPROVE_OPTION) {
-	                       System.out.println("You chose to open this file: " +
+	                       System.out.println("You choose to open this file: " +
 	                    	openFile.getSelectedFile().getName());
 	                    }
-	            }
-			
+	                    String saveFile = openFile.getSelectedFile().getAbsolutePath();
+	                    FileInputStream fs;
+				        File file = new File(saveFile);
+				        try {	
+							fs = new FileInputStream(file);
+							OPCPackage d = OPCPackage.open(fs);
+							xw = new XWPFWordExtractor(d);
+							/*
+							String insert123 = xw.getText();
+							PreparedStatement ps = null;
+							String insertTableSQL = "INSERT INTO digsin_source"
+									+ "(Source) VALUES"
+									+ "(?)";
+					 
+							 try {
+								ps = (PreparedStatement) ConnectionImpl.connection.prepareStatement(insertTableSQL);
+								ps.setString(1, insert123);
+								
+								// execute insert SQL stetement
+								ps.executeUpdate();
+								System.out.println("Record is inserted into table!");
+							} catch (SQLException e) {
+								System.out.println(e.getMessage());
+							}
+							*/
+							System.out.println(xw.getText());   
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InvalidFormatException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (XmlException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (OpenXML4JException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			}
 		});
 		
 		textField = new JTextField();

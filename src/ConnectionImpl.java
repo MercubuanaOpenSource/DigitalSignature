@@ -1,7 +1,7 @@
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 
 public class ConnectionImpl implements IConnection {
 public static Connection connection;
@@ -17,7 +17,8 @@ public static Connection connection;
 			   
 			  System.out.println("MySQL JDBC Driver Registered!");
 			  Connection connection = null;
-			   
+			 
+			  
 			  try{
 			   connection = DriverManager
 			     .getConnection("jdbc:mysql://localhost:3306/digsin","root", "");
